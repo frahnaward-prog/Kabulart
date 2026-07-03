@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Kabul Art</title>
+  <meta name="description" content="Secure checkout for your artwork purchase.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a class="logo" href="Kabul-Art.html#top">
+        <span>Kabul Art</span>
+      </a>
+      <div class="nav-actions">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="Kabul-Art.html#top">Home</a></li>
+          <li><a href="Kabul-Art.html#gallery">Gallery</a></li>
+          <li><a href="Kabul-Art.html#about">About</a></li>
+          <li><a href="Kabul-Art.html#contact">Contact</a></li>
+        </ul>
+        <button class="cart-link" type="button" aria-label="View cart" id="cart-trigger">
+          <span aria-hidden="true">🛒</span>
+          <span id="cart-count">0</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section checkout-section">
+      <div class="checkout-container reveal">
+        <div class="checkout-header">
+          <h1>Order Summary</h1>
+          <p class="checkout-step">Step 1 of 1: Shipping & Delivery</p>
+        </div>
+
+        <div class="checkout-grid">
+          <!-- Order Summary Sidebar -->
+          <aside class="checkout-summary">
+            <div class="checkout-summary-header">
+              <h2>Order Summary</h2>
+            </div>
+            <div class="checkout-items" id="checkout-items">
+              <!-- Items populated by JS -->
+            </div>
+            <div class="checkout-summary-totals">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="checkout-subtotal">$0</strong>
+              </div>
+              <div class="summary-row">
+                <span>Shipping</span>
+                <strong id="checkout-shipping">Calculated at delivery</strong>
+              </div>
+              <div class="summary-row">
+                <span>Tax</span>
+                <strong id="checkout-tax">Calculated at delivery</strong>
+              </div>
+              <div class="summary-row total">
+                <span>Total</span>
+                <strong id="checkout-total">$0</strong>
+              </div>
+            </div>
+            <button class="checkout-edit-cart" id="edit-cart-btn">← Edit Cart</button>
+          </aside>
+
+          <!-- Checkout Form -->
+          <div class="checkout-form-wrapper">
+            <form id="checkout-form" class="checkout-form" novalidate>
+              <!-- Contact Information -->
+              <fieldset class="form-section">
+                <legend>Contact Information</legend>
+                
+                <div class="form-group">
+                  <label for="contact-name">Full Name *</label>
+                  <input type="text" id="contact-name" name="fullName" placeholder="Your name" required>
+                  <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-email">Email Address *</label>
+                  <input type="email" id="contact-email" name="email" placeholder="you@example.com" required>
+                  <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-phone">Phone Number</label>
+                  <input type="tel" id="contact-phone" name="phone" placeholder="+1 (555) 000-0000">
+                  <span class="error-message" aria-live="polite"></span>
+                </div>
+              </fieldset>
+
+              <!-- Shipping Address -->
+              <fieldset class="form-section">
+                <legend>Shipping Address</legend>
+
+                <div class="form-group">
+                  <label for="street">Street Address *</label>
+                  <input type="text" id="street" name="street" placeholder="123 Main St" required>
+                  <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="city">City *</label>
+                  <input type="text" id="city" name="city" placeholder="New York" required>
+                  <span class="error-message" aria-live="polite"></span>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="state">State/Province *</label>
+                    <input type="text" id="state" name="state" placeholder="NY" required>
+                    <span class="error-message" aria-live="polite"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="zip">Postal Code *</label>
+                    <input type="text" id="zip" name="zip" placeholder="10001" required>
+                    <span class="error-message" aria-live="polite"></span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="country">Country *</label>
+                  <input type="text" id="country" name="country" placeholder="United States" required>
+                  <span class="error-message" aria-live="polite"></span>
+                </div>
+              </fieldset>
+
+              <!-- Shipping Method -->
+              <fieldset class="form-section">
+                <legend>Shipping Method</legend>
+                <div class="shipping-options">
+                  <label class="shipping-option">
+                    <input type="radio" name="shipping" value="standard" checked>
+                    <span class="option-label">
+                      <strong>Standard Shipping</strong>
+                      <small>7-10 business days</small>
+                    </span>
+                  </label>
+                  <label class="shipping-option">
+                    <input type="radio" name="shipping" value="express">
+                    <span class="option-label">
+                      <strong>Express Shipping</strong>
+                      <small>3-5 business days</small>
+                    </span>
+                  </label>
+                  <label class="shipping-option">
+                    <input type="radio" name="shipping" value="priority">
+                    <span class="option-label">
+                      <strong>Priority Overnight</strong>
+                      <small>Next business day</small>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <!-- Order Notes -->
+              <fieldset class="form-section">
+                <legend>Order Notes</legend>
+                <div class="form-group">
+                  <label for="notes">Special Instructions (Optional)</label>
+                  <textarea id="notes" name="notes" placeholder="Any special handling, delivery instructions, or questions?"></textarea>
+                  <span class="error-message" aria-live="polite"></span>
+                </div>
+              </fieldset>
+
+              <!-- Agreements -->
+              <fieldset class="form-section">
+                <legend>Agreements</legend>
+                <label class="checkbox-group">
+                  <input type="checkbox" name="terms" required>
+                  <span>I agree to the <a href="#" target="_blank">Terms & Conditions</a> and <a href="#" target="_blank">Privacy Policy</a> *</span>
+                </label>
+                <span class="error-message" aria-live="polite"></span>
+              </fieldset>
+
+              <!-- Payment Method Selection -->
+              <fieldset class="form-section">
+                <legend>Payment Method</legend>
+                <div class="payment-options">
+                  <label class="payment-option">
+                    <input type="radio" name="payment-method" value="stripe" checked>
+                    <span class="option-label">
+                      <strong>💳 Stripe</strong>
+                      <small>Credit/Debit Cards, Apple Pay, Google Pay</small>
+                    </span>
+                  </label>
+                  <label class="payment-option">
+                    <input type="radio" name="payment-method" value="paypal">
+                    <span class="option-label">
+                      <strong>🅿️ PayPal</strong>
+                      <small>PayPal Balance, Bank Account, Cards</small>
+                    </span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <!-- Form Status -->
+              <p id="checkout-status" class="form-status" aria-live="polite"></p>
+
+              <!-- Actions -->
+              <div class="checkout-actions">
+                <button type="button" class="button secondary-button" id="continue-shopping-btn">← Continue Shopping</button>
+                <button type="submit" class="button primary-button" id="proceed-payment-btn">Proceed to Payment</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section trust-section" aria-label="Checkout security">
+      <div class="trust-grid reveal">
+        <article class="trust-card">
+          <div class="trust-icon">🔒</div>
+          <h3>Secure Checkout</h3>
+          <p>Your information is protected and never shared.</p>
+        </article>
+        <article class="trust-card">
+          <div class="trust-icon">📦</div>
+          <h3>Careful Packaging</h3>
+          <p>Artworks are securely packaged with premium materials.</p>
+        </article>
+        <article class="trust-card">
+          <div class="trust-icon">🌍</div>
+          <h3>Worldwide Shipping</h3>
+          <p>We deliver to over 150 countries with full insurance.</p>
+        </article>
+        <article class="trust-card">
+          <div class="trust-icon">💬</div>
+          <h3>Support</h3>
+          <p>Need help? Contact us within 24 hours for assistance.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shopping Cart Sidebar -->
+  <div id="cart-sidebar" class="cart-sidebar" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+    <div class="cart-header">
+      <h2 id="cart-title">Shopping Cart</h2>
+      <button class="cart-close" type="button" aria-label="Close cart">×</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="cart-empty">
+        <p>Your cart is empty</p>
+        <p class="cart-empty-hint">Add artworks to get started</p>
+      </div>
+    </div>
+    <div class="cart-summary">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <strong id="cart-subtotal">$0</strong>
+      </div>
+      <div class="cart-total-row">
+        <span>Shipping</span>
+        <strong id="cart-shipping">Calculated at checkout</strong>
+      </div>
+      <div class="cart-total-row total">
+        <span>Total</span>
+        <strong id="cart-total">$0</strong>
+      </div>
+      <a class="button primary-button" href="checkout.html" id="cart-checkout">Proceed to Checkout</a>
+    </div>
+  </div>
+
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <h3>Kabul Art</h3>
+      <p>Original Abstract Art</p>
+    </div>
+    <div class="footer-links">
+      <a href="Kabul-Art.html#gallery">Gallery</a>
+      <a href="Kabul-Art.html#about">About</a>
+      <a href="Kabul-Art.html#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // ===== PAYMENT CONFIGURATION =====
+    const STRIPE_PUBLISHABLE_KEY = 'pk_live_PLACEHOLDER_YOUR_STRIPE_PUBLISHABLE_KEY';
+    const PAYPAL_CLIENT_ID = 'PLACEHOLDER_YOUR_PAYPAL_CLIENT_ID';
+    const MERCHANT_EMAIL = 'your-email@kabulart.com'; // Replace with your email
+
+    // Checkout-specific logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = JSON.parse(localStorage.getItem('cart-items')) || [];
+      const checkoutItemsContainer = document.getElementById('checkout-items');
+      const checkoutSubtotal = document.getElementById('checkout-subtotal');
+      const checkoutTotal = document.getElementById('checkout-total');
+      const checkoutForm = document.getElementById('checkout-form');
+      const editCartBtn = document.getElementById('edit-cart-btn');
+      const continueShoppingBtn = document.getElementById('continue-shopping-btn');
+      const checkoutStatus = document.getElementById('checkout-status');
+      const proceedPaymentBtn = document.getElementById('proceed-payment-btn');
+
+      // Display cart items
+      if (cart.length === 0) {
+        checkoutItemsContainer.innerHTML = '<p class="empty-cart-notice">Your cart is empty</p>';
+        checkoutForm.style.display = 'none';
+      } else {
+        checkoutItemsContainer.innerHTML = cart.map((item) => `
+          <div class="checkout-item">
+            <img src="${item.image}" alt="${item.title}" class="checkout-item-image">
+            <div class="checkout-item-details">
+              <h4>${item.title}</h4>
+              <p>${item.size}</p>
+              <p class="quantity">Qty: ${item.quantity}</p>
+            </div>
+            <div class="checkout-item-price">$${(item.price * item.quantity).toLocaleString()}</div>
+          </div>
+        `).join('');
+
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        checkoutSubtotal.textContent = `$${subtotal.toLocaleString()}`;
+        checkoutTotal.textContent = `$${subtotal.toLocaleString()}`;
+      }
+
+      // Edit cart
+      editCartBtn.addEventListener('click', () => {
+        window.location.href = 'Kabul-Art.html#gallery';
+      });
+
+      continueShoppingBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'Kabul-Art.html#gallery';
+      });
+
+      // Form validation and payment processing
+      checkoutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(checkoutForm);
+        const errors = {};
+        let isValid = true;
+
+        // Validate required fields
+        const requiredFields = ['fullName', 'email', 'street', 'city', 'state', 'zip', 'country'];
+        requiredFields.forEach((field) => {
+          if (!formData.get(field)?.trim()) {
+            errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+            isValid = false;
+          }
+        });
+
+        // Validate email
+        if (formData.get('email') && !formData.get('email').includes('@')) {
+          errors.email = 'Please enter a valid email';
+          isValid = false;
+        }
+
+        // Validate terms
+        if (!formData.get('terms')) {
+          errors.terms = 'You must agree to the terms';
+          isValid = false;
+        }
+
+        // Clear previous errors
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+        if (!isValid) {
+          Object.entries(errors).forEach(([field, message]) => {
+            const input = document.querySelector(`[name="${field}"]`);
+            if (input?.parentElement) {
+              input.parentElement.querySelector('.error-message').textContent = message;
+            }
+          });
+          return;
+        }
+
+        // Store order data
+        const orderData = {
+          name: formData.get('fullName'),
+          email: formData.get('email'),
+          phone: formData.get('phone') || 'Not provided',
+          address: formData.get('street'),
+          city: formData.get('city'),
+          state: formData.get('state'),
+          zip: formData.get('zip'),
+          country: formData.get('country'),
+          shippingMethod: document.querySelector('input[name="shipping"]:checked').value,
+          notes: formData.get('notes') || 'None',
+          paymentMethod: formData.get('payment-method'),
+          cart: cart,
+          total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        };
+
+        // Save order temporarily
+        localStorage.setItem('pending-checkout', JSON.stringify(orderData));
+
+        // Route to payment method
+        const paymentMethod = formData.get('payment-method');
+        if (paymentMethod === 'stripe') {
+          handleStripePayment(orderData);
+        } else if (paymentMethod === 'paypal') {
+          handlePayPalPayment(orderData);
+        }
+      });
+
+      // Handle Stripe Payment
+      function handleStripePayment(orderData) {
+        checkoutStatus.textContent = '⏳ Preparing Stripe payment...';
+        checkoutStatus.style.color = '#C8A96A';
+
+        // Build order summary for payment link
+        const orderSummary = buildOrderSummary(orderData);
+        const cartTotal = orderData.total;
+
+        // In production, you would create a Payment Link via Stripe API
+        // For now, we'll use Stripe Checkout approach with form post
+        // This is a simplified demo - replace with actual Stripe integration
+
+        // Option 1: Redirect to Stripe Payment Link (requires backend)
+        // const stripePaymentLinkId = 'plink_1PLACEHOLDER'; // Your payment link ID from Stripe
+        // window.location.href = `https://checkout.stripe.com/pay/${stripePaymentLinkId}`;
+
+        // Option 2: Store order and send to contact form (current approach)
+        localStorage.setItem('pending-order', JSON.stringify({
+          name: orderData.name,
+          email: orderData.email,
+          message: `PAYMENT REQUEST - STRIPE\n\n${orderSummary}\n\nCustomer has selected Stripe as payment method. Total: $${cartTotal}\n\nPlease send Stripe payment link via email to process this order.`
+        }));
+
+        // Clear cart
+        localStorage.removeItem('cart-items');
+        localStorage.removeItem('pending-checkout');
+
+        // Redirect to contact
+        window.location.href = 'Kabul-Art.html#contact';
+      }
+
+      // Handle PayPal Payment
+      function handlePayPalPayment(orderData) {
+        checkoutStatus.textContent = '⏳ Preparing PayPal payment...';
+        checkoutStatus.style.color = '#C8A96A';
+
+        const orderSummary = buildOrderSummary(orderData);
+        const cartTotal = orderData.total;
+
+        // Option 1: Redirect to PayPal standard checkout
+        // This requires setting up PayPal IPN on your backend
+        // For now, we use email-based approach
+
+        // Option 2: Send order via email with PayPal link
+        localStorage.setItem('pending-order', JSON.stringify({
+          name: orderData.name,
+          email: orderData.email,
+          message: `PAYMENT REQUEST - PAYPAL\n\n${orderSummary}\n\nCustomer has selected PayPal as payment method. Total: $${cartTotal}\n\nPlease send PayPal payment link via email to process this order.`
+        }));
+
+        // Clear cart
+        localStorage.removeItem('cart-items');
+        localStorage.removeItem('pending-checkout');
+
+        // Redirect to contact
+        window.location.href = 'Kabul-Art.html#contact';
+      }
+
+      // Build formatted order summary
+      function buildOrderSummary(orderData) {
+        const itemsList = orderData.cart.map(item => 
+          `  ${item.quantity}x ${item.title} @ $${item.price} = $${(item.price * item.quantity).toLocaleString()}`
+        ).join('\n');
+
+        return `
+ARTWORK ORDER CONFIRMATION
+
+═══════════════════════════════════════
+
+CUSTOMER INFORMATION
+Name: ${orderData.name}
+Email: ${orderData.email}
+Phone: ${orderData.phone}
+
+SHIPPING ADDRESS
+${orderData.address}
+${orderData.city}, ${orderData.state} ${orderData.zip}
+${orderData.country}
+
+SHIPPING METHOD
+${formatShippingMethod(orderData.shippingMethod)}
+
+═══════════════════════════════════════
+
+ITEMS ORDERED
+${itemsList}
+
+SUBTOTAL: $${orderData.total.toLocaleString()}
+SHIPPING: Calculated at delivery
+TAX: Calculated at delivery
+═══════════════════════════════════════
+TOTAL: $${orderData.total.toLocaleString()}
+
+PAYMENT METHOD: ${orderData.paymentMethod === 'stripe' ? 'Stripe' : 'PayPal'}
+
+SPECIAL INSTRUCTIONS
+${orderData.notes}
+
+═══════════════════════════════════════
+        `.trim();
+      }
+
+      function formatShippingMethod(method) {
+        const methods = {
+          'standard': 'Standard Shipping (7-10 business days)',
+          'express': 'Express Shipping (3-5 business days)',
+          'priority': 'Priority Overnight (Next business day)'
+        };
+        return methods[method] || method;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amber Drift | Kabul Art</title>
+  <meta name="description" content="Amber Drift - Acrylic on Canvas. Original artwork by Farhad. Warm golden tones flow and merge, evoking the dreamy dissolution of form into color and light.">
+  <meta name="keywords" content="abstract art, original painting, acrylic on canvas">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a class="logo" href="Kabul-Art.html#top">
+        <span>Kabul Art</span>
+      </a>
+      <div class="nav-actions">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="Kabul-Art.html#top">Home</a></li>
+          <li><a href="Kabul-Art.html#gallery">Gallery</a></li>
+          <li><a href="Kabul-Art.html#about">About</a></li>
+          <li><a href="Kabul-Art.html#contact">Contact</a></li>
+        </ul>
+        <button class="cart-link" type="button" aria-label="View cart" id="cart-trigger">
+          <span aria-hidden="true">🛒</span>
+          <span id="cart-count">0</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="artwork-detail-section" aria-labelledby="artwork-title">
+      <div class="artwork-container reveal">
+        <!-- Artwork Viewer -->
+        <div class="artwork-viewer">
+          <div class="image-viewer">
+            <img id="artwork-main" src="images/paintings/Abstract 2 Canvas.HEIC" alt="Amber Drift" class="main-image">
+            <div class="zoom-controls">
+              <button class="zoom-btn" id="zoom-in" title="Zoom in">+</button>
+              <button class="zoom-btn" id="zoom-reset" title="Reset zoom">Reset</button>
+              <button class="zoom-btn" id="zoom-out" title="Zoom out">−</button>
+              <button class="zoom-btn fullscreen-btn" id="fullscreen" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+          <div class="image-modal" id="image-modal" aria-hidden="true">
+            <button class="modal-close" id="modal-close" aria-label="Close fullscreen">×</button>
+            <img id="modal-image" src="images/paintings/Abstract 2 Canvas.HEIC" alt="Amber Drift fullscreen">
+          </div>
+        </div>
+
+        <!-- Artwork Info -->
+        <aside class="artwork-info">
+          <div class="artwork-header">
+            <h1 id="artwork-title">Amber Drift</h1>
+            <div class="trust-badges">
+              <span class="badge-trust">✓ Original Artwork</span>
+              <span class="badge-trust">✓ Signed Certificate</span>
+              <span class="badge-trust">✓ Ready to Hang</span>
+              <span class="badge-trust">✓ Worldwide Shipping</span>
+            </div>
+          </div>
+
+          <div class="artwork-price-section">
+            <div class="price-display">
+              <span class="price-label">Price</span>
+              <strong class="price-amount" id="artwork-price">$2,900</strong>
+            </div>
+            <div class="availability-badge available">In Stock</div>
+          </div>
+
+          <div class="artwork-specs">
+            <h3>Artwork Details</h3>
+            <dl>
+              <dt>Medium</dt>
+              <dd>Acrylic on Canvas</dd>
+              
+              <dt>Dimensions</dt>
+              <dd>40" × 30"</dd>
+              
+              <dt>Year</dt>
+              <dd>2024</dd>
+              
+              <dt>Framing</dt>
+              <dd>Canvas stretched on wooden frame</dd>
+              
+              <dt>Certificate</dt>
+              <dd>Authenticity certificate included</dd>
+              
+              <dt>Signed</dt>
+              <dd>Signed by artist on front</dd>
+            </dl>
+          </div>
+
+          <div class="artwork-actions">
+            <button 
+              class="button primary-button" 
+              id="add-to-cart-btn"
+              data-add-to-cart
+              data-id="amber-drift"
+              data-title="Amber Drift"
+              data-price="2900"
+              data-image="images/paintings/Abstract 2 Canvas.HEIC"
+              data-size="40&quot; × 30&quot;"
+            >
+              Add to Cart
+            </button>
+            <button class="button secondary-button" id="save-wishlist">
+              ♡ Save to Wishlist
+            </button>
+          </div>
+
+          <div class="artwork-share">
+            <p>Share this artwork</p>
+            <div class="share-buttons">
+              <a href="https://www.facebook.com/sharer/sharer.php?u=https://kabulart.com/amber-drift.html" target="_blank" rel="noopener" title="Share on Facebook">f</a>
+              <a href="https://twitter.com/intent/tweet?url=https://kabulart.com/amber-drift.html&text=Amber Drift" target="_blank" rel="noopener" title="Share on Twitter">𝕏</a>
+              <a href="https://www.pinterest.com/pin/create/button/?url=https://kabulart.com/amber-drift.html&media=images/paintings/Abstract 2 Canvas.HEIC&description=Amber Drift" target="_blank" rel="noopener" title="Pin on Pinterest">P</a>
+              <a href="mailto:?subject=Amber Drift&body=Check out this beautiful artwork: https://kabulart.com/amber-drift.html" title="Email to a friend">✉</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Artwork Story -->
+    <section class="artwork-story-section">
+      <div class="artwork-story reveal">
+        <h2>The Story Behind This Work</h2>
+        <p>
+          Amber Drift celebrates the beauty of dissolution—where solid forms slowly transform into fluid fields of color. Warm golden tones drift and merge, creating a sense of weightlessness and dreamy luminosity that invites contemplation of transformation.
+        </p>
+        <p>
+          The work explores how identity and form dissolve in moments of surrender. Rather than fighting the process, the composition embraces it, allowing warm ambiance to overwhelm the canvas, suggesting that in the letting go, something more essential emerges.
+        </p>
+      </div>
+    </section>
+
+    <!-- Related Works -->
+    <section class="related-works-section">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Related Works</p>
+        <h2>You Might Also Like</h2>
+      </div>
+      <div class="related-grid reveal">
+        <article class="related-card">
+          <img src="images/paintings/Abstract Paint 2.heic" alt="Midnight Bloom">
+          <div class="related-info">
+            <h3>Midnight Bloom</h3>
+            <p class="related-medium">Mixed Media</p>
+            <p class="related-price">$2,650</p>
+            <a href="midnight-bloom.html" class="related-link">View Collection →</a>
+          </div>
+        </article>
+
+        <article class="related-card">
+          <img src="images/paintings/Abstract Paint.heic" alt="Velvet Silence">
+          <div class="related-info">
+            <h3>Velvet Silence</h3>
+            <p class="related-medium">Oil on Canvas</p>
+            <p class="related-price">$2,100</p>
+            <a href="velvet-silence.html" class="related-link">View Collection →</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="artwork-cta-section">
+      <div class="cta-card reveal">
+        <h2>Custom Commission?</h2>
+        <p>Can't find exactly what you're looking for? Commission a custom piece tailored to your space and vision.</p>
+        <a href="Kabul-Art.html#contact" class="button primary-button">Request Custom Work</a>
+      </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="section trust-section" aria-label="Why buy from Kabul Art">
+      <div class="trust-grid reveal">
+        <article class="trust-card">
+          <div class="trust-icon">🎨</div>
+          <h3>Original Artwork</h3>
+          <p>Each piece is handcrafted as a one-of-one original creation.</p>
+        </article>
+        <article class="trust-card">
+          <div class="trust-icon">🔒</div>
+          <h3>Secure Checkout</h3>
+          <p>Protected payment with Stripe or PayPal for peace of mind.</p>
+        </article>
+        <article class="trust-card">
+          <div class="trust-icon">🚚</div>
+          <h3>Worldwide Shipping</h3>
+          <p>Safely delivered to 150+ countries with full insurance.</p>
+        </article>
+        <article class="trust-card">
+          <div class="trust-icon">📋</div>
+          <h3>Certificate Included</h3>
+          <p>Every artwork comes with an authenticity certificate.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shopping Cart Sidebar -->
+  <div id="cart-sidebar" class="cart-sidebar" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+    <div class="cart-header">
+      <h2 id="cart-title">Shopping Cart</h2>
+      <button class="cart-close" type="button" aria-label="Close cart">×</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <div class="cart-empty">
+        <p>Your cart is empty</p>
+        <p class="cart-empty-hint">Add artworks to get started</p>
+      </div>
+    </div>
+    <div class="cart-summary">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <strong id="cart-subtotal">$0</strong>
+      </div>
+      <div class="cart-total-row">
+        <span>Shipping</span>
+        <strong id="cart-shipping">Calculated at checkout</strong>
+      </div>
+      <div class="cart-total-row total">
+        <span>Total</span>
+        <strong id="cart-total">$0</strong>
+      </div>
+      <a class="button primary-button" href="checkout.html" id="cart-checkout">Proceed to Checkout</a>
+    </div>
+  </div>
+
+  <!-- Cart Overlay -->
+  <div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <h3>Kabul Art</h3>
+      <p>Original Abstract Art</p>
+    </div>
+    <div class="footer-links">
+      <a href="Kabul-Art.html#gallery">Gallery</a>
+      <a href="Kabul-Art.html#about">About</a>
+      <a href="Kabul-Art.html#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Artwork detail page logic
+    document.addEventListener('DOMContentLoaded', () => {
+      // Image zoom functionality
+      const artworkMain = document.getElementById('artwork-main');
+      const imageModal = document.getElementById('image-modal');
+      const modalImage = document.getElementById('modal-image');
+      const modalClose = document.getElementById('modal-close');
+      const zoomIn = document.getElementById('zoom-in');
+      const zoomOut = document.getElementById('zoom-out');
+      const zoomReset = document.getElementById('zoom-reset');
+      const fullscreenBtn = document.getElementById('fullscreen');
+      
+      let currentZoom = 1;
+      const MIN_ZOOM = 1;
+      const MAX_ZOOM = 2.6;
+      const ZOOM_STEP = 0.2;
+
+      // Zoom controls
+      zoomIn.addEventListener('click', () => {
+        currentZoom = Math.min(currentZoom + ZOOM_STEP, MAX_ZOOM);
+        updateZoom();
+      });
+
+      zoomOut.addEventListener('click', () => {
+        currentZoom = Math.max(currentZoom - ZOOM_STEP, MIN_ZOOM);
+        updateZoom();
+      });
+
+      zoomReset.addEventListener('click', () => {
+        currentZoom = 1;
+        updateZoom();
+      });
+
+      function updateZoom() {
+        artworkMain.style.transform = `scale(${currentZoom})`;
+      }
+
+      // Fullscreen modal
+      fullscreenBtn.addEventListener('click', () => {
+        imageModal.setAttribute('aria-hidden', 'false');
+        imageModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      modalClose.addEventListener('click', closeModal);
+      imageModal.addEventListener('click', (e) => {
+        if (e.target === imageModal) closeModal();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+
+      function closeModal() {
+        imageModal.setAttribute('aria-hidden', 'true');
+        imageModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Wishlist
+      const wishlistBtn = document.getElementById('save-wishlist');
+      const artworkId = 'amber-drift';
+      
+      wishlistBtn.addEventListener('click', () => {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const isWishlisted = wishlist.includes(artworkId);
+        
+        if (isWishlisted) {
+          wishlist.splice(wishlist.indexOf(artworkId), 1);
+          wishlistBtn.textContent = '♡ Save to Wishlist';
+          wishlistBtn.classList.remove('wishlisted');
+        } else {
+          wishlist.push(artworkId);
+          wishlistBtn.textContent = '♥ Saved to Wishlist';
+          wishlistBtn.classList.add('wishlisted');
+        }
+        
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      });
+
+      // Check if wishlisted on load
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      if (wishlist.includes(artworkId)) {
+        wishlistBtn.textContent = '♥ Saved to Wishlist';
+        wishlistBtn.classList.add('wishlisted');
+      }
+    });
+  </script>
+</body>
+</html>
