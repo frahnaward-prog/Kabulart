@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Horizon | Kabul Art</title>
+  <meta name="description" content="Explore Golden Horizon, an original abstract painting by Farhad with rich texture and luminous depth.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="navbar" aria-label="Primary navigation">
+      <a class="logo" href="index.html">
+        <img src="images/Logo/logo.png" alt="Kabul Art Logo" class="logo-image">
+      </a>
+      <div class="nav-actions">
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#gallery">Gallery</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section painting-detail-section">
+      <div class="painting-detail-card reveal">
+        <div class="painting-viewer">
+          <div class="viewer-main">
+            <img class="painting-detail-image" id="detail-main-image" src="images/paintings/Abstract 2 Canvas.png" alt="Golden Horizon painting by Farhad">
+            <div class="viewer-actions" aria-label="Artwork viewer controls">
+              <button class="viewer-button" type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
+              <button class="viewer-button" type="button" data-action="zoom-out" aria-label="Zoom out">−</button>
+              <button class="viewer-button" type="button" data-action="reset" aria-label="Reset zoom">Reset</button>
+              <button class="viewer-button viewer-fullscreen" type="button" data-action="fullscreen" aria-label="Open full-screen viewer">Full Screen</button>
+            </div>
+          </div>
+          <div class="viewer-thumbs" role="listbox" aria-label="Artwork photo gallery">
+            <button class="thumb-btn active" type="button" data-image="images/paintings/Abstract 2 Canvas.png" data-alt="Golden Horizon painting by Farhad" aria-label="View main artwork photo">
+              <img src="images/paintings/Abstract 2 Canvas.png" alt="">
+            </button>
+            <button class="thumb-btn" type="button" data-image="images/paintings/golden-horizon 1.png" data-alt="Golden Horizon detail view" aria-label="View detail photo">
+              <img src="images/paintings/golden-horizon 1.png" alt="">
+            </button>
+            <button class="thumb-btn" type="button" data-image="images/paintings/liminal-equilibrium.png" data-alt="Golden Horizon studio view" aria-label="View studio photo">
+              <img src="images/paintings/liminal-equilibrium.png" alt="">
+            </button>
+          </div>
+        </div>
+
+        <div class="painting-detail-info">
+          <p class="eyebrow">Individual Artwork Page</p>
+          <h1>Golden Horizon</h1>
+          <div class="detail-badges" aria-label="Artwork availability">
+            <span class="badge badge-available">Available</span>
+            <span class="badge badge-new">One of One</span>
+          </div>
+          <div class="painting-meta">
+            <div><span>Price</span><strong>$2,800</strong></div>
+            <div><span>Size</span><strong>48 × 36 in</strong></div>
+            <div><span>Medium</span><strong>Acrylic on Canvas</strong></div>
+            <div><span>Year</span><strong>2026</strong></div>
+            <div><span>Availability</span><strong>Available for worldwide shipping</strong></div>
+          </div>
+          <p class="lightbox-description">
+            Golden Horizon is a luminous abstract composition featuring layered texture, warm metallic tones, and an expansive sense of movement. It is designed to bring elegance and depth to contemporary interiors while remaining deeply personal and collectible.
+          </p>
+
+          <div class="artist-card-inline">
+            <div class="artist-avatar" aria-hidden="true"></div>
+            <div>
+              <h3>About the Artist</h3>
+              <p>Farhad creates original abstract work inspired by emotion, movement, and the quiet energy of nature. Every piece is handmade and made to feel distinctive in modern spaces.</p>
+            </div>
+          </div>
+
+          <div class="painting-actions">
+            <a class="button primary-button" href="index.html#contact">Add to Cart</a>
+            <a class="button secondary-button" href="index.html#contact">Buy Now</a>
+          </div>
+          <p class="detail-note">Worldwide shipping available • Secure checkout • Custom framing available</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section related-section" aria-labelledby="related-works-title">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Related Works</p>
+        <h2 id="related-works-title">Other pieces collectors often pair with this artwork</h2>
+      </div>
+      <div class="projects-grid">
+        <article class="project-card reveal">
+          <img class="project-image" src="images/paintings/liminal-equilibrium.png" alt="Liminal Equilibrium painting by Farhad" loading="lazy">
+          <div class="project-info">
+            <span>Oil on Canvas • 16&quot; × 20&quot;</span>
+            <h3>Liminal Equilibrium</h3>
+            <p>$850</p>
+            <a href="index.html#gallery" class="button small-button">View Collection</a>
+          </div>
+        </article>
+        <article class="project-card reveal">
+          <img class="project-image" src="images/paintings/still-waters.png.png" alt="Veiled Memories painting by Farhad" loading="lazy">
+          <div class="project-info">
+            <span>Acrylic on Canvas • 16&quot; × 20&quot;</span>
+            <h3>Veiled Memories</h3>
+            <p>$780</p>
+            <a href="index.html#gallery" class="button small-button">View Collection</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="artwork-viewer-modal" class="artwork-viewer-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Artwork viewer">
+    <div class="artwork-viewer-panel">
+      <button class="artwork-viewer-close" type="button" aria-label="Close viewer">×</button>
+      <img id="viewer-modal-image" src="" alt="Artwork preview">
+      <div class="artwork-viewer-controls">
+        <button class="viewer-button" type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
+        <button class="viewer-button" type="button" data-action="zoom-out" aria-label="Zoom out">−</button>
+        <button class="viewer-button" type="button" data-action="reset" aria-label="Reset zoom">Reset</button>
+        <span id="viewer-zoom-label">1.0×</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <h3>Kabul Art</h3>
+      <p>Original Abstract Art</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
