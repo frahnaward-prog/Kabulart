@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("✅ Script loaded - Kabul Art website");
-
     const reveals = document.querySelectorAll('.reveal');
 
     if ('IntersectionObserver' in window) {
@@ -22,6 +20,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-menu a');
     const sections = document.querySelectorAll('section[id]');
+    const siteHeader = document.querySelector('.site-header');
+    const scrollLocks = new Set();
+
+    const syncBodyScrollLock = () => {
+        const shouldLock = scrollLocks.size > 0;
+        document.body.classList.toggle('menu-open', scrollLocks.has('menu'));
+        document.body.classList.toggle('modal-open', scrollLocks.has('artwork-modal'));
+        document.body.classList.toggle('cart-open', scrollLocks.has('cart'));
+        document.body.classList.toggle('lightbox-open', scrollLocks.has('lightbox'));
+        document.body.style.overflow = shouldLock ? 'hidden' : '';
+    };
+
+    const lockScroll = (reason) => {
+        scrollLocks.add(reason);
+        syncBodyScrollLock();
+    };
+
+    const unlockScroll = (reason) => {
+        scrollLocks.delete(reason);
+        syncBodyScrollLock();
+    };
 
     const updateActiveLink = () => {
         let current = '';
@@ -41,22 +60,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    let navOverlay = null;
+
+    const closeMenu = () => {
+        if (!navToggle || !navMenu) return;
+        navMenu.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.setAttribute('aria-label', 'Open navigation');
+        navOverlay?.classList.remove('active');
+        unlockScroll('menu');
+    };
+
+    const openMenu = () => {
+        if (!navToggle || !navMenu) return;
+        navMenu.classList.add('active');
+        navToggle.setAttribute('aria-expanded', 'true');
+        navToggle.setAttribute('aria-label', 'Close navigation');
+        navOverlay?.classList.add('active');
+        lockScroll('menu');
+    };
+
     if (navToggle && navMenu) {
+        navToggle.setAttribute('aria-label', 'Open navigation');
+        navOverlay = document.createElement('button');
+        navOverlay.type = 'button';
+        navOverlay.className = 'nav-menu-overlay';
+        navOverlay.setAttribute('aria-label', 'Close navigation menu');
+        document.body.appendChild(navOverlay);
+
         navToggle.addEventListener('click', () => {
             const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-            navToggle.setAttribute('aria-expanded', String(!expanded));
-            navMenu.classList.toggle('active');
+            if (expanded) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
         });
+
+        navOverlay.addEventListener('click', closeMenu);
 
         navMenu.querySelectorAll('a').forEach((link) => {
             link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
+                closeMenu();
             });
         });
+
+        document.addEventListener('click', (event) => {
+            if (!navMenu.classList.contains('active')) return;
+            if (event.target.closest('.nav-menu, .nav-toggle')) return;
+            closeMenu();
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                closeMenu();
+            }
+        }, { passive: true });
     }
 
-    window.addEventListener('scroll', updateActiveLink);
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
     updateActiveLink();
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightbox-image');
@@ -106,6 +168,78 @@ document.addEventListener('DOMContentLoaded', () => {
         siteLogo: '',
         heroTitle: 'Original Abstract Art for Modern Interiors',
         heroCopy: 'Discover handcrafted original paintings created by Farhad. Each artwork is one of a kind, bringing texture, emotion, and timeless elegance into your home.',
+    };
+
+    const artworkPageMap = {
+        'golden-horizon': 'golden-horizon.html',
+        'painting-golden-horizon': 'painting-golden-horizon.html',
+        'liminal-equilibrium': 'liminal-equilibrium.html',
+        'veiled-memories': 'veiled-memories.html',
+        'echoes-of-dawn': 'echoes-of-dawn.html',
+        'quiet-horizon': 'quiet-horizon.html',
+        'still-waters': 'still-waters.html',
+        'amber-drift': 'amber-drift.html',
+        'velvet-silence': 'velvet-silence.html',
+        'midnight-bloom': 'midnight-bloom.html',
+    };
+
+    const fallbackPaintings = [
+        {
+            title: 'Golden Horizon',
+            slug: 'golden-horizon',
+            medium: 'Acrylic on Canvas',
+            dimensions: '48 × 36 in',
+            price: 2800,
+            status: 'available',
+            image: 'images/paintings/Abstract 2 Canvas.png',
+            altText: 'Golden Horizon original abstract painting by Farhad',
+            description: 'Golden Horizon is a luminous abstract composition layered with rich texture, warm metallic tones, and an expansive sense of movement.',
+            featured: true,
+            year: '2026',
+        },
+        {
+            title: 'Liminal Equilibrium',
+            slug: 'liminal-equilibrium',
+            medium: 'Oil on Canvas',
+            dimensions: '36 × 24 in',
+            price: 2200,
+            status: 'available',
+            image: 'images/paintings/liminal-equilibrium.png',
+            altText: 'Liminal Equilibrium original abstract painting by Farhad',
+            description: 'Liminal Equilibrium explores stillness and transition through layered movement and warm contrast.',
+            featured: true,
+            year: '2024',
+        },
+        {
+            title: 'Veiled Memories',
+            slug: 'veiled-memories',
+            medium: 'Mixed Media',
+            dimensions: '30 × 40 in',
+            price: 2600,
+            status: 'available',
+            image: 'images/paintings/still-waters.png.png',
+            altText: 'Veiled Memories original abstract painting by Farhad',
+            description: 'Veiled Memories brings together layered surfaces, softness, and quiet depth.',
+            featured: true,
+            year: '2024',
+        },
+    ];
+
+    const defaultPublicSettings = {
+        hero_title: defaultContent.heroTitle,
+        hero_copy: defaultContent.heroCopy,
+        contact_heading: 'Commission or Purchase',
+        contact_intro_title: 'Interested in a painting or custom commission?',
+        contact_intro_copy: 'Send me a message and I will reply within 48 hours.',
+        contact_email: '',
+        contact_phone: '',
+        instagram_url: '',
+        facebook_url: '',
+        pinterest_url: '',
+        shipping_note: '',
+        footer_blurb: 'Original abstract paintings in acrylic and oil.\nHandcrafted with passion.',
+        footer_email: 'info@kabulart.ca',
+        footer_copyright: '© 2026 Kabul Art • All Rights Reserved • Handcrafted by Farhad',
     };
 
     const getSavedTheme = () => {
@@ -185,6 +319,87 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAdminInputs(theme, content);
     };
 
+    const formatCurrency = (value) => {
+        const amount = Number(value);
+        if (!Number.isFinite(amount)) return 'Contact for price';
+        return `$${amount.toLocaleString()}`;
+    };
+
+    const formatMediumLabel = (medium = '') => {
+        return medium ? `Original ${medium}` : 'Original artwork';
+    };
+
+    const getArtworkPageHref = (slug = '') => artworkPageMap[slug] || 'index.html#gallery';
+
+    const fetchJson = async (url) => {
+        const response = await fetch(url, {
+            headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed for ${url}`);
+        }
+
+        return response.json();
+    };
+
+    const applyPublicSettings = (settings = {}) => {
+        if (heroTitle && settings.hero_title) {
+            heroTitle.innerHTML = settings.hero_title.replace(/\n/g, '<br>');
+        }
+
+        if (heroCopy && settings.hero_copy) {
+            heroCopy.textContent = settings.hero_copy;
+        }
+
+        const contactHeading = document.querySelector('.contact-section .section-heading h2');
+        const contactIntroTitle = document.querySelector('.contact-intro h3');
+        const contactIntroCopy = document.querySelector('.contact-intro p:last-child');
+        const footerBlurb = document.querySelector('.site-footer .footer-column p');
+        const footerConnectLinks = document.querySelectorAll('.site-footer .footer-column:last-child a');
+        const footerBottom = document.querySelector('.footer-bottom p');
+        const shippingCard = Array.from(document.querySelectorAll('.store-card')).find((card) => card.querySelector('h3')?.textContent.trim() === 'Shipping Information');
+
+        if (contactHeading && settings.contact_heading) {
+            contactHeading.textContent = settings.contact_heading;
+        }
+
+        if (contactIntroTitle && settings.contact_intro_title) {
+            contactIntroTitle.textContent = settings.contact_intro_title;
+        }
+
+        if (contactIntroCopy && settings.contact_intro_copy) {
+            contactIntroCopy.textContent = settings.contact_intro_copy;
+        }
+
+        const emailField = document.getElementById('email');
+        if (emailField && settings.contact_email) {
+            emailField.placeholder = settings.contact_email;
+        }
+
+        if (shippingCard && settings.shipping_note) {
+            const shippingCopy = shippingCard.querySelector('p');
+            if (shippingCopy) {
+                shippingCopy.textContent = settings.shipping_note;
+            }
+        }
+
+        if (footerBlurb && settings.footer_blurb) {
+            footerBlurb.innerHTML = settings.footer_blurb.replace(/\n/g, '<br>');
+        }
+
+        if (footerConnectLinks.length >= 4) {
+            if (settings.instagram_url) footerConnectLinks[0].href = settings.instagram_url;
+            if (settings.facebook_url) footerConnectLinks[1].href = settings.facebook_url;
+            if (settings.pinterest_url) footerConnectLinks[2].href = settings.pinterest_url;
+            if (settings.footer_email) footerConnectLinks[3].href = `mailto:${settings.footer_email}`;
+        }
+
+        if (footerBottom && settings.footer_copyright) {
+            footerBottom.textContent = settings.footer_copyright;
+        }
+    };
+
     if (urlParams.get('admin') === '1') {
         localStorage.setItem('kabulArtAdmin', 'true');
     }
@@ -248,18 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Filter Logic
     const filterGallery = () => {
-        const searchTerm = searchInput?.value.toLowerCase().trim() || '';
-        const activeFilters = Array.from(document.querySelectorAll('.filter-btn.active')).map((btn) => btn.dataset.filter);
-
-        const filtered = paintings.filter((painting) => {
-            const matchesSearch = painting.title.toLowerCase().includes(searchTerm);
-            const matchesFilter = activeFilters.includes('all') ||
-                activeFilters.includes(painting.medium) ||
-                (activeFilters.includes('available') && painting.status === 'available');
-            return matchesSearch && matchesFilter;
-        });
-
-        renderGallery(filtered);
+        searchTerm = searchInput?.value.toLowerCase().trim() || '';
+        applyGalleryFilters();
     };
 
     // Event Listeners
@@ -270,19 +475,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (button.dataset.filter === 'all') {
                 document.querySelectorAll('.filter-btn').forEach((btn) => btn.classList.remove('active'));
                 button.classList.add('active');
+                activeFilter = 'all';
             } else {
                 document.querySelector('[data-filter="all"]')?.classList.remove('active');
                 button.classList.toggle('active');
+                activeFilter = button.classList.contains('active') ? button.dataset.filter : 'all';
             }
             if (document.querySelectorAll('.filter-btn.active').length === 0) {
                 document.querySelector('[data-filter="all"]')?.classList.add('active');
+                activeFilter = 'all';
             }
             filterGallery();
         });
     });
-
-    // Initial load
-    renderGallery(paintings);
 
     let activeFilter = 'all';
     let searchTerm = '';
@@ -334,16 +539,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const normalizedSearch = searchTerm.trim().toLowerCase();
         getGalleryCards().forEach((card) => {
             const title = card.dataset.title?.toLowerCase() || '';
-            const medium = card.dataset.medium || '';
-            const status = card.dataset.status || '';
+            const medium = (card.dataset.medium || '').toLowerCase();
+            const status = (card.dataset.status || '').toLowerCase();
             const matchesSearch = title.includes(normalizedSearch);
-            const matchesFilter = activeFilter === 'all' || medium === activeFilter || status === activeFilter;
+            const matchesFilter = activeFilter === 'all' || medium.includes(activeFilter) || status === activeFilter;
             card.style.display = matchesSearch && matchesFilter ? '' : 'none';
         });
     };
 
     const bindGalleryCardEvents = () => {
         getGalleryCards().forEach((card) => {
+            if (card.dataset.galleryBound === 'true') return;
             const image = card.querySelector('.project-image');
 
             card.addEventListener('click', (event) => {
@@ -366,6 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.setAttribute('tabindex', '0');
             card.setAttribute('role', 'button');
+            card.dataset.galleryBound = 'true';
         });
     };
 
@@ -439,6 +646,221 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateGalleryData();
             });
         });
+    };
+
+    const normalizePainting = (painting) => {
+        const numericPrice = Number(String(painting.price ?? '').replace(/[^0-9.]/g, ''));
+        const medium = painting.medium || '';
+        const normalizedMedium = medium.toLowerCase();
+        const normalizedStatus = (painting.status || 'available').toLowerCase();
+
+        return {
+            id: painting.id || painting.slug || painting.title?.toLowerCase().replace(/\s+/g, '-') || `painting-${Date.now()}`,
+            title: painting.title || 'Untitled',
+            slug: painting.slug || createSlugFromTitle(painting.title || ''),
+            image: painting.image || 'images/paintings/Abstract 2 Canvas.png',
+            medium,
+            mediumKey: normalizedMedium.includes('oil') ? 'oil' : normalizedMedium.includes('mixed') ? 'mixed' : 'acrylic',
+            status: normalizedStatus,
+            size: painting.dimensions || painting.size || '',
+            priceValue: Number.isFinite(numericPrice) ? numericPrice : 0,
+            price: typeof painting.price === 'string' && painting.price.includes('$') ? painting.price : formatCurrency(numericPrice),
+            description: painting.description || '',
+            alt: painting.altText || `${painting.title || 'Artwork'} painting by Farhad`,
+            featured: Boolean(painting.featured),
+            year: painting.year || '',
+        };
+    };
+
+    const createSlugFromTitle = (title = '') => title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+    const renderFeaturedCollection = (items) => {
+        const collectionGrid = document.querySelector('.featured-collection-grid');
+        if (!collectionGrid || !items.length) return;
+
+        collectionGrid.innerHTML = items.slice(0, 9).map((item) => `
+            <article class="collection-card">
+              <img src="${item.image}" alt="${item.alt}" loading="lazy" decoding="async">
+              <div class="collection-card-body">
+                <h3>${item.title}</h3>
+                <p class="card-subtitle">${formatMediumLabel(item.medium)}</p>
+                <p class="card-meta">${item.size || 'Custom size'}</p>
+                <p class="card-status">${item.status === 'sold' ? 'Sold' : item.status === 'reserved' ? 'Reserved' : 'Available'}</p>
+                <p class="card-price">${item.price}</p>
+                <div class="painting-actions">
+                  <a class="button small-button secondary-button" href="${getArtworkPageHref(item.slug)}">View Artwork</a>
+                  <button class="button small-button add-to-cart" type="button" data-title="${item.title}" data-price="${item.priceValue}" data-image="${item.image}">Add to Cart</button>
+                </div>
+              </div>
+            </article>
+        `).join('');
+    };
+
+    const renderHomepageFeature = (item) => {
+        if (!item) return;
+
+        const featureCard = document.querySelector('.painting-detail-section .painting-detail-card');
+        if (!featureCard) return;
+
+        const image = featureCard.querySelector('.painting-detail-image');
+        const title = featureCard.querySelector('#painting-title');
+        const metaRows = featureCard.querySelectorAll('.painting-meta div strong');
+        const actionLink = featureCard.querySelector('.painting-actions .primary-button');
+        const buyLink = featureCard.querySelector('.painting-actions .secondary-button');
+
+        if (image) {
+            image.src = item.image;
+            image.alt = item.alt;
+        }
+
+        if (title) title.textContent = item.title;
+        if (metaRows[0]) metaRows[0].textContent = item.price;
+        if (metaRows[1]) metaRows[1].textContent = item.size || 'Custom size';
+        if (metaRows[2]) metaRows[2].textContent = item.medium || 'Original artwork';
+        if (metaRows[3]) metaRows[3].textContent = item.year || 'Current Collection';
+        if (metaRows[4]) metaRows[4].textContent = item.status === 'sold' ? 'Sold' : item.status === 'reserved' ? 'Reserved' : 'Available';
+        if (actionLink) actionLink.href = getArtworkPageHref(item.slug);
+        if (buyLink) {
+            buyLink.href = getArtworkPageHref(item.slug);
+            buyLink.textContent = 'Buy Now';
+        }
+    };
+
+    const applyArtworkTemplate = (painting) => {
+        if (!painting) return;
+
+        const bodySlug = document.body.dataset.artworkSlug;
+        if (!bodySlug) return;
+
+        document.title = `${painting.title} | Kabul Art`;
+
+        const mainTitle = document.querySelector('#artwork-title, .painting-detail-info h1');
+        const priceTag = document.querySelector('.price-tag, .price-amount');
+        const description = document.querySelector('.lightbox-description');
+        const mainImage = document.querySelector('[data-gallery-main], #artwork-main, #detail-main-image');
+        const modalImage = document.querySelector('[data-gallery-modal-image], #viewer-modal-image');
+        const thumbButton = document.querySelector('.thumb-btn.active');
+        const availabilityBadge = document.querySelector('.availability-badge');
+        const detailBadges = document.querySelector('.detail-badges');
+        const metaRows = document.querySelectorAll('.painting-meta div');
+        const specTerms = document.querySelectorAll('.artwork-specs dt');
+        const addToCart = document.querySelector('[data-add-to-cart]');
+        const wishlistButton = document.querySelector('[data-wishlist-button]');
+
+        if (mainTitle) mainTitle.textContent = painting.title;
+        if (priceTag) priceTag.textContent = painting.price;
+        if (description && painting.description) description.textContent = painting.description;
+
+        [mainImage, modalImage].forEach((imageNode) => {
+            if (!imageNode) return;
+            imageNode.src = painting.image;
+            imageNode.alt = painting.alt;
+        });
+
+        if (thumbButton) {
+            thumbButton.dataset.image = painting.image;
+            thumbButton.dataset.alt = painting.alt;
+            const thumbImage = thumbButton.querySelector('img');
+            if (thumbImage) thumbImage.src = painting.image;
+        }
+
+        if (availabilityBadge) {
+            availabilityBadge.textContent = painting.status === 'sold' ? 'Sold' : painting.status === 'reserved' ? 'Reserved' : 'In Stock';
+        }
+
+        if (detailBadges) {
+            const availability = detailBadges.querySelector('.badge');
+            if (availability) {
+                availability.textContent = painting.status === 'sold' ? 'Sold' : painting.status === 'reserved' ? 'Reserved' : 'Available';
+                availability.className = `badge ${painting.status === 'sold' ? 'badge-sold' : 'badge-available'}`;
+            }
+        }
+
+        if (metaRows.length) {
+            const values = [painting.price, painting.size || 'Custom size', painting.medium || 'Original artwork', painting.year || 'Current Collection', painting.status === 'sold' ? 'Sold' : painting.status === 'reserved' ? 'Reserved' : 'Available for worldwide shipping'];
+            metaRows.forEach((row, index) => {
+                const strong = row.querySelector('strong');
+                if (strong && values[index]) strong.textContent = values[index];
+            });
+        }
+
+        if (specTerms.length) {
+            const valuesByLabel = {
+                medium: painting.medium || 'Original artwork',
+                dimensions: painting.size || 'Custom size',
+                year: painting.year || 'Current Collection',
+                availability: painting.status === 'sold' ? 'Sold' : painting.status === 'reserved' ? 'Reserved' : 'Available',
+            };
+
+            specTerms.forEach((term) => {
+                const key = term.textContent.trim().toLowerCase();
+                const valueNode = term.nextElementSibling;
+                if (valueNode && valuesByLabel[key]) {
+                    valueNode.textContent = valuesByLabel[key];
+                }
+            });
+        }
+
+        if (addToCart) {
+            addToCart.dataset.id = painting.slug;
+            addToCart.dataset.title = painting.title;
+            addToCart.dataset.price = String(painting.priceValue);
+            addToCart.dataset.image = painting.image;
+            addToCart.dataset.size = painting.size || '';
+        }
+
+        if (wishlistButton) {
+            wishlistButton.dataset.artworkId = painting.slug;
+        }
+    };
+
+    const hydratePublicSite = async () => {
+        let paintingsData = fallbackPaintings.map(normalizePainting);
+        let settingsData = defaultPublicSettings;
+
+        try {
+            const [paintingsResponse, settingsResponse] = await Promise.all([
+                fetchJson('/api/paintings'),
+                fetchJson('/api/settings'),
+            ]);
+
+            if (Array.isArray(paintingsResponse.paintings) && paintingsResponse.paintings.length) {
+                paintingsData = paintingsResponse.paintings.map(normalizePainting);
+            }
+
+            if (settingsResponse.settings) {
+                settingsData = { ...defaultPublicSettings, ...settingsResponse.settings };
+            }
+        } catch (error) {
+            // Static HTML remains as a graceful fallback when the API is unavailable.
+        }
+
+        applyPublicSettings(settingsData);
+
+        if (galleryGrid) {
+            galleryItems = paintingsData.map((item) => ({
+                id: item.id,
+                title: item.title,
+                image: item.image,
+                medium: item.mediumKey,
+                status: item.status,
+                size: item.size,
+                price: item.price,
+                description: item.description,
+            }));
+            renderGalleryGrid();
+        }
+
+        renderFeaturedCollection(paintingsData.filter((item) => item.featured || item.status === 'available'));
+        renderHomepageFeature(paintingsData.find((item) => item.featured) || paintingsData[0]);
+
+        const artworkSlug = document.body.dataset.artworkSlug;
+        if (artworkSlug) {
+            const matchingPainting = paintingsData.find((item) => item.slug === artworkSlug);
+            if (matchingPainting) {
+                applyArtworkTemplate(matchingPainting);
+            }
+        }
     };
 
     const addNewGalleryItem = () => {
@@ -526,6 +948,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isAdmin && galleryEditList) renderGalleryEditor();
 
+    bindGalleryCardEvents();
+    hydratePublicSite();
+
     // Lightbox Functionality
     const openLightbox = (cardOrSource, titleOverride) => {
         if (!lightbox || !lightboxImage) return;
@@ -573,7 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
+        lockScroll('lightbox');
     };
 
     const closeLightbox = () => {
@@ -581,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lightbox.classList.remove('active');
         lightbox.setAttribute('aria-hidden', 'true');
         lightboxImage.src = '';
-        document.body.style.overflow = 'visible';
+        unlockScroll('lightbox');
     };
 
     document.addEventListener('click', (event) => {
@@ -592,30 +1017,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelectorAll('.project-card').forEach((card) => {
-        const image = card.querySelector('.project-image');
-
-        card.addEventListener('click', (event) => {
-            if (event.target.closest('.button, .small-button')) return;
-            event.preventDefault();
-            openLightbox(card);
-        });
-
-        image?.addEventListener('click', (event) => {
-            event.stopPropagation();
-            openLightbox(card);
-        });
-
-        card.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                openLightbox(card);
-            }
-        });
-
-        card.setAttribute('tabindex', '0');
-        card.setAttribute('role', 'button');
-    });
+    bindGalleryCardEvents();
 
     if (lightboxClose) {
         lightboxClose.addEventListener('click', closeLightbox);
@@ -635,103 +1037,488 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const detailImage = document.getElementById('detail-main-image');
-    const thumbButtons = document.querySelectorAll('.thumb-btn');
-    const viewerModal = document.getElementById('artwork-viewer-modal');
-    const viewerModalImage = document.getElementById('viewer-modal-image');
-    const viewerZoomLabel = document.getElementById('viewer-zoom-label');
-    const viewerCloseButton = document.querySelector('.artwork-viewer-close');
-    let currentZoom = 1;
+    const createZoomSurface = (stage, image, zoomLabel, options = {}) => {
+        if (!stage || !image) return null;
 
-    const setViewerZoom = (zoomValue) => {
-        if (!viewerModalImage) return;
-        currentZoom = Math.min(2.6, Math.max(1, zoomValue));
-        viewerModalImage.style.transform = `scale(${currentZoom})`;
-        if (viewerZoomLabel) {
-            viewerZoomLabel.textContent = `${currentZoom.toFixed(1)}×`;
+        const config = {
+            minScale: 1,
+            maxScale: options.maxScale || 4,
+            wheelStep: options.wheelStep || 0.24,
+            pinchPadding: options.pinchPadding || 0.2,
+        };
+
+        const state = {
+            scale: 1,
+            x: 0,
+            y: 0,
+            pointers: new Map(),
+            pinchStartDistance: 0,
+            pinchStartScale: 1,
+            pinchAnchor: { x: 0, y: 0 },
+            dragStart: null,
+            lastTapMoved: false,
+        };
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const updateZoomLabel = () => {
+            if (zoomLabel) {
+                zoomLabel.textContent = `${state.scale.toFixed(1)}×`;
+            }
+        };
+
+        const getLimits = () => {
+            const stageRect = stage.getBoundingClientRect();
+            const baseWidth = image.offsetWidth || image.clientWidth || stageRect.width;
+            const baseHeight = image.offsetHeight || image.clientHeight || stageRect.height;
+            const overflowX = Math.max(0, ((baseWidth * state.scale) - stageRect.width) / 2);
+            const overflowY = Math.max(0, ((baseHeight * state.scale) - stageRect.height) / 2);
+
+            return {
+                x: overflowX,
+                y: overflowY,
+            };
+        };
+
+        const clampPan = () => {
+            const limits = getLimits();
+            state.x = clamp(state.x, -limits.x, limits.x);
+            state.y = clamp(state.y, -limits.y, limits.y);
+        };
+
+        const render = () => {
+            if (state.scale <= 1) {
+                state.x = 0;
+                state.y = 0;
+            } else {
+                clampPan();
+            }
+
+            image.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
+            image.style.cursor = state.scale > 1 ? 'grab' : 'zoom-in';
+            updateZoomLabel();
+        };
+
+        const setAspectRatio = () => {
+            if (image.naturalWidth && image.naturalHeight) {
+                stage.style.setProperty('--artwork-aspect-ratio', `${image.naturalWidth} / ${image.naturalHeight}`);
+            }
+        };
+
+        const setLoadingState = (isLoading) => {
+            stage.classList.toggle('is-loading', isLoading);
+        };
+
+        const handleImageReady = () => {
+            setAspectRatio();
+            setLoadingState(false);
+            render();
+        };
+
+        const syncImageState = () => {
+            setLoadingState(true);
+
+            if (image.complete && image.naturalWidth > 0) {
+                handleImageReady();
+                return;
+            }
+
+            image.addEventListener('load', handleImageReady, { once: true });
+            image.addEventListener('error', () => setLoadingState(false), { once: true });
+        };
+
+        const zoomTo = (nextScale, origin) => {
+            const clampedScale = clamp(nextScale, config.minScale, config.maxScale);
+            const previousScale = state.scale;
+
+            if (clampedScale === previousScale) return;
+
+            if (origin && previousScale > 0) {
+                const ratio = clampedScale / previousScale;
+                state.x = origin.x - ((origin.x - state.x) * ratio);
+                state.y = origin.y - ((origin.y - state.y) * ratio);
+            }
+
+            state.scale = clampedScale;
+            render();
+        };
+
+        const zoomBy = (delta, origin) => {
+            zoomTo(state.scale + delta, origin);
+        };
+
+        const reset = () => {
+            state.scale = 1;
+            state.x = 0;
+            state.y = 0;
+            render();
+        };
+
+        const getPointerDistance = () => {
+            const points = Array.from(state.pointers.values());
+            if (points.length < 2) return 0;
+
+            const [first, second] = points;
+            return Math.hypot(second.x - first.x, second.y - first.y);
+        };
+
+        const getPointerMidpoint = () => {
+            const points = Array.from(state.pointers.values());
+            if (points.length < 2) return { x: 0, y: 0 };
+
+            const [first, second] = points;
+            const rect = stage.getBoundingClientRect();
+
+            return {
+                x: ((first.x + second.x) / 2) - rect.left - (rect.width / 2),
+                y: ((first.y + second.y) / 2) - rect.top - (rect.height / 2),
+            };
+        };
+
+        stage.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            const rect = stage.getBoundingClientRect();
+            const origin = {
+                x: event.clientX - rect.left - (rect.width / 2),
+                y: event.clientY - rect.top - (rect.height / 2),
+            };
+            const direction = event.deltaY < 0 ? config.wheelStep : -config.wheelStep;
+            zoomBy(direction, origin);
+        }, { passive: false });
+
+        stage.addEventListener('pointerdown', (event) => {
+            state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+            state.lastTapMoved = false;
+
+            if (state.pointers.size === 1 && state.scale > 1) {
+                stage.setPointerCapture(event.pointerId);
+                state.dragStart = {
+                    x: event.clientX - state.x,
+                    y: event.clientY - state.y,
+                };
+            }
+
+            if (state.pointers.size === 2) {
+                state.pinchStartDistance = getPointerDistance();
+                state.pinchStartScale = state.scale;
+                state.pinchAnchor = getPointerMidpoint();
+            }
+        });
+
+        stage.addEventListener('pointermove', (event) => {
+            if (!state.pointers.has(event.pointerId)) return;
+
+            const previous = state.pointers.get(event.pointerId);
+            state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+
+            if (previous && (Math.abs(event.clientX - previous.x) > 3 || Math.abs(event.clientY - previous.y) > 3)) {
+                state.lastTapMoved = true;
+            }
+
+            if (state.pointers.size === 2) {
+                const nextDistance = getPointerDistance();
+                if (state.pinchStartDistance > 0) {
+                    const scaleFactor = nextDistance / state.pinchStartDistance;
+                    zoomTo(state.pinchStartScale * scaleFactor, state.pinchAnchor);
+                }
+                return;
+            }
+
+            if (state.dragStart && state.scale > 1) {
+                state.x = event.clientX - state.dragStart.x;
+                state.y = event.clientY - state.dragStart.y;
+                render();
+            }
+        });
+
+        const clearPointer = (event) => {
+            state.pointers.delete(event.pointerId);
+            if (state.pointers.size < 2) {
+                state.pinchStartDistance = 0;
+            }
+            if (state.pointers.size === 0) {
+                state.dragStart = null;
+            }
+        };
+
+        stage.addEventListener('pointerup', clearPointer);
+        stage.addEventListener('pointercancel', clearPointer);
+        stage.addEventListener('pointerleave', clearPointer);
+
+        updateZoomLabel();
+        syncImageState();
+
+        return {
+            zoomBy,
+            zoomTo,
+            reset,
+            syncImageState,
+            get scale() {
+                return state.scale;
+            },
+            get moved() {
+                return state.lastTapMoved;
+            },
+        };
+    };
+
+    const initArtworkGalleries = () => {
+        const galleries = document.querySelectorAll('[data-artwork-gallery]');
+
+        galleries.forEach((gallery) => {
+            const mainStage = gallery.querySelector('[data-gallery-stage="main"]');
+            const mainImage = gallery.querySelector('[data-gallery-main]');
+            const modal = gallery.querySelector('.artwork-viewer-modal');
+            const modalStage = gallery.querySelector('[data-gallery-stage="modal"]');
+            const modalImage = gallery.querySelector('[data-gallery-modal-image]');
+            const modalCloseButton = gallery.querySelector('.artwork-viewer-close');
+            const zoomLabel = gallery.querySelector('[data-gallery-zoom-label]');
+            const thumbs = Array.from(gallery.querySelectorAll('.thumb-btn'));
+
+            if (!mainStage || !mainImage || !modal || !modalStage || !modalImage) return;
+
+            const mainSurface = createZoomSurface(mainStage, mainImage, null, { maxScale: 3.5, wheelStep: 0.18 });
+            const modalSurface = createZoomSurface(modalStage, modalImage, zoomLabel, { maxScale: 5, wheelStep: 0.22 });
+
+            const setActiveThumb = (activeButton) => {
+                thumbs.forEach((button) => {
+                    const isActive = button === activeButton;
+                    button.classList.toggle('active', isActive);
+                    button.setAttribute('aria-selected', String(isActive));
+                });
+            };
+
+            const updateGalleryImage = (src, alt, activeButton) => {
+                if (!src) return;
+
+                gallery.classList.add('is-switching');
+
+                mainImage.src = src;
+                mainImage.alt = alt;
+                modalImage.src = src;
+                modalImage.alt = alt;
+
+                mainSurface?.reset();
+                modalSurface?.reset();
+                mainSurface?.syncImageState();
+                modalSurface?.syncImageState();
+
+                setActiveThumb(activeButton);
+
+                window.setTimeout(() => {
+                    gallery.classList.remove('is-switching');
+                }, 220);
+            };
+
+            const openModal = () => {
+                modal.classList.add('active');
+                modal.setAttribute('aria-hidden', 'false');
+                lockScroll('artwork-modal');
+                modalSurface?.reset();
+                modalSurface?.syncImageState();
+            };
+
+            const closeModal = () => {
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+                unlockScroll('artwork-modal');
+                modalSurface?.reset();
+            };
+
+            thumbs.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const imageSrc = button.dataset.image;
+                    const imageAlt = button.dataset.alt || mainImage.alt;
+                    updateGalleryImage(imageSrc, imageAlt, button);
+                });
+            });
+
+            mainStage.addEventListener('click', () => {
+                if (!mainSurface?.moved) {
+                    openModal();
+                }
+            });
+
+            mainStage.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openModal();
+                }
+            });
+
+            gallery.querySelectorAll('[data-gallery-control]').forEach((button) => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const surface = button.dataset.gallerySurface === 'main' ? mainSurface : modalSurface;
+                    const action = button.dataset.galleryControl;
+
+                    if (action === 'fullscreen') {
+                        openModal();
+                        return;
+                    }
+
+                    if (!surface) return;
+
+                    if (action === 'zoom-in') {
+                        surface.zoomBy(0.3);
+                    } else if (action === 'zoom-out') {
+                        surface.zoomBy(-0.3);
+                    } else if (action === 'reset') {
+                        surface.reset();
+                    }
+                });
+            });
+
+            modalCloseButton?.addEventListener('click', closeModal);
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            if (thumbs.length > 0) {
+                const activeThumb = thumbs.find((button) => button.classList.contains('active')) || thumbs[0];
+                updateGalleryImage(activeThumb.dataset.image || mainImage.src, activeThumb.dataset.alt || mainImage.alt, activeThumb);
+            } else {
+                mainSurface?.syncImageState();
+                modalSurface?.syncImageState();
+            }
+        });
+    };
+
+    const initArtworkWishlist = () => {
+        const wishlistButton = document.querySelector('[data-wishlist-button], #save-wishlist, .wishlist-button');
+        if (!wishlistButton) return;
+
+        const addToCartButton = document.querySelector('[data-add-to-cart]');
+        const artworkId = wishlistButton.dataset.artworkId || addToCartButton?.dataset.id;
+        if (!artworkId) return;
+
+        const updateWishlistButton = (isWishlisted) => {
+            wishlistButton.classList.toggle('wishlisted', isWishlisted);
+            wishlistButton.innerHTML = isWishlisted ? '&#9829; Saved to Wishlist' : '&#9825; Save to Wishlist';
+            wishlistButton.setAttribute('aria-pressed', String(isWishlisted));
+        };
+
+        wishlistButton.addEventListener('click', () => {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishlistIndex = wishlist.indexOf(artworkId);
+
+            if (wishlistIndex >= 0) {
+                wishlist.splice(wishlistIndex, 1);
+            } else {
+                wishlist.push(artworkId);
+            }
+
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            updateWishlistButton(wishlist.includes(artworkId));
+        });
+
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        updateWishlistButton(wishlist.includes(artworkId));
+    };
+
+    const initStickyPurchaseBar = () => {
+        if (window.innerWidth > 768) return;
+
+        const purchaseSection = document.querySelector('.painting-actions, .artwork-actions');
+        const footer = document.querySelector('.site-footer');
+        if (!purchaseSection) return;
+
+        const title = document.querySelector('.painting-detail-info h1, .artwork-header h1')?.textContent?.trim() || 'Artwork';
+        const priceText = document.querySelector('.price-tag, .price-amount, .painting-meta strong')?.textContent?.trim() || 'Contact for price';
+        const stickySource = purchaseSection.querySelector('.secondary-button[href], .primary-button[href], [data-add-to-cart], .button');
+        if (!stickySource) return;
+
+        document.body.classList.add('page-has-sticky-purchase');
+
+        const stickyBar = document.createElement('div');
+        stickyBar.className = 'sticky-purchase-bar';
+        stickyBar.setAttribute('aria-hidden', 'true');
+
+        const summary = document.createElement('div');
+        summary.className = 'sticky-purchase-summary';
+        summary.innerHTML = `<span>${title}</span><strong>${priceText}</strong>`;
+
+        let action;
+        if (stickySource.tagName === 'A') {
+            action = document.createElement('a');
+            action.href = stickySource.getAttribute('href') || '#contact';
+        } else {
+            action = document.createElement('button');
+            action.type = 'button';
+            Array.from(stickySource.attributes).forEach((attribute) => {
+                if (attribute.name.startsWith('data-')) {
+                    action.setAttribute(attribute.name, attribute.value);
+                }
+            });
         }
-    };
 
-    const openViewerModal = () => {
-        if (!viewerModal || !viewerModalImage || !detailImage) return;
-        viewerModalImage.src = detailImage.src;
-        viewerModalImage.alt = detailImage.alt;
-        setViewerZoom(1);
-        viewerModal.classList.add('active');
-        viewerModal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-    };
+        action.className = stickySource.className;
+        action.textContent = stickySource.textContent?.trim() || 'Buy Now';
 
-    const closeViewerModal = () => {
-        if (!viewerModal) return;
-        viewerModal.classList.remove('active');
-        viewerModal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-    };
+        stickyBar.append(summary, action);
+        document.body.appendChild(stickyBar);
 
-    if (detailImage) {
-        detailImage.addEventListener('click', openViewerModal);
-    }
+        const setStickyVisibility = (isVisible) => {
+            stickyBar.classList.toggle('is-visible', isVisible);
+            stickyBar.setAttribute('aria-hidden', String(!isVisible));
+            document.body.style.setProperty('--sticky-purchase-height', `${stickyBar.offsetHeight || 88}px`);
+            document.body.classList.toggle('has-sticky-purchase-bar', isVisible);
+        };
 
-    thumbButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            thumbButtons.forEach((thumb) => thumb.classList.remove('active'));
-            button.classList.add('active');
-            const imageSrc = button.dataset.image;
-            const imageAlt = button.dataset.alt || 'Artwork preview';
-            if (detailImage && imageSrc) {
-                detailImage.src = imageSrc;
-                detailImage.alt = imageAlt;
+        const purchaseObserver = new IntersectionObserver((entries) => {
+            const entry = entries[0];
+            if (!entry) return;
+            setStickyVisibility(!entry.isIntersecting);
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -10% 0px',
+        });
+
+        purchaseObserver.observe(purchaseSection);
+
+        if (footer) {
+            const footerObserver = new IntersectionObserver((entries) => {
+                const footerEntry = entries[0];
+                if (!footerEntry) return;
+                if (footerEntry.isIntersecting) {
+                    setStickyVisibility(false);
+                }
+            }, {
+                threshold: 0.12,
+            });
+
+            footerObserver.observe(footer);
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                stickyBar.remove();
+                document.body.classList.remove('page-has-sticky-purchase', 'has-sticky-purchase-bar');
+            } else {
+                document.body.style.setProperty('--sticky-purchase-height', `${stickyBar.offsetHeight || 88}px`);
             }
-        });
-    });
+        }, { passive: true });
+    };
 
-    document.querySelectorAll('[data-action="zoom-in"]').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            setViewerZoom(currentZoom + 0.25);
-        });
-    });
-
-    document.querySelectorAll('[data-action="zoom-out"]').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            setViewerZoom(currentZoom - 0.25);
-        });
-    });
-
-    document.querySelectorAll('[data-action="reset"]').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            setViewerZoom(1);
-        });
-    });
-
-    document.querySelectorAll('[data-action="fullscreen"]').forEach((button) => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            openViewerModal();
-        });
-    });
-
-    if (viewerCloseButton) {
-        viewerCloseButton.addEventListener('click', closeViewerModal);
-    }
-
-    if (viewerModal) {
-        viewerModal.addEventListener('click', (event) => {
-            if (event.target === viewerModal) {
-                closeViewerModal();
-            }
-        });
-    }
+    initArtworkGalleries();
+    initArtworkWishlist();
+    initStickyPurchaseBar();
 
     const backToTopButton = document.querySelector('.back-to-top');
 
     if (backToTopButton) {
         window.addEventListener('scroll', () => {
             backToTopButton.classList.toggle('visible', window.scrollY > 500);
-        });
+        }, { passive: true });
 
         backToTopButton.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -793,6 +1580,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cartOverlay?.classList.add('active');
         cartSidebar?.setAttribute('aria-hidden', 'false');
         cartOverlay?.setAttribute('aria-hidden', 'false');
+        lockScroll('cart');
     };
 
     const closeCart = () => {
@@ -800,6 +1588,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cartOverlay?.classList.remove('active');
         cartSidebar?.setAttribute('aria-hidden', 'true');
         cartOverlay?.setAttribute('aria-hidden', 'true');
+        unlockScroll('cart');
     };
 
     if (cartTrigger) {
@@ -824,6 +1613,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && navMenu?.classList.contains('active')) {
+            closeMenu();
+        }
         if (event.key === 'Escape' && cartSidebar?.classList.contains('open')) {
             closeCart();
         }

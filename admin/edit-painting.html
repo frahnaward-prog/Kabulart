@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Edit Painting | Kabul Art Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body data-page="edit-painting">
+<main class="admin-shell">
+  <div class="admin-topbar">
+    <div class="admin-brand">
+      <p class="admin-muted">Kabul Art Administration</p>
+      <h1 id="page-title">Edit Painting</h1>
+      <p>Update the artwork details, image, and storefront status.</p>
+    </div>
+
+    <div class="admin-actions">
+      <a class="admin-button secondary" href="/admin/dashboard">Back to Dashboard</a>
+      <button class="admin-button secondary" type="button" data-admin-logout>Log Out</button>
+    </div>
+  </div>
+
+  <section class="admin-panel">
+    <div class="admin-dashboard-grid">
+      <form id="painting-form" class="admin-form">
+        <div class="admin-form-grid">
+          <div class="admin-field">
+            <label for="title">Title</label>
+            <input id="title" name="title" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="slug">Slug</label>
+            <input id="slug" name="slug" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="price">Price</label>
+            <input id="price" name="price" type="number" min="0" step="0.01" required>
+          </div>
+
+          <div class="admin-field">
+            <label for="medium">Medium</label>
+            <input id="medium" name="medium">
+          </div>
+
+          <div class="admin-field">
+            <label for="dimensions">Dimensions</label>
+            <input id="dimensions" name="dimensions">
+          </div>
+
+          <div class="admin-field">
+            <label for="year">Year</label>
+            <input id="year" name="year">
+          </div>
+
+          <div class="admin-field">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+              <option value="available">Available</option>
+              <option value="reserved">Reserved</option>
+              <option value="sold">Sold</option>
+            </select>
+          </div>
+
+          <div class="admin-field">
+            <label for="sortOrder">Sort Order</label>
+            <input id="sortOrder" name="sortOrder" type="number" min="0" step="1" value="0">
+          </div>
+
+          <div class="admin-field full">
+            <label for="altText">Image Alt Text</label>
+            <input id="altText" name="altText">
+          </div>
+
+          <div class="admin-field full">
+            <label for="description">Description</label>
+            <textarea id="description" name="description"></textarea>
+          </div>
+
+          <div class="admin-field full">
+            <label for="image">Replace Artwork Image</label>
+            <input id="image" name="image" type="file" accept="image/*">
+          </div>
+        </div>
+
+        <label class="admin-checkbox">
+          <input id="featured" name="featured" type="checkbox">
+          <span>Feature this painting on the admin list</span>
+        </label>
+
+        <button id="submit-button" class="admin-button" type="submit">Save Changes</button>
+        <p class="admin-status" data-admin-status aria-live="polite"></p>
+      </form>
+
+      <aside class="admin-panel admin-preview">
+        <h2>Current Preview</h2>
+        <img id="painting-preview-image" src="/images/paintings/Abstract 2 Canvas.png" alt="Painting preview">
+        <p class="admin-muted">If you upload a new image, this preview updates before saving.</p>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script src="/admin/admin-app.js" defer></script>
+</body>
+</html>

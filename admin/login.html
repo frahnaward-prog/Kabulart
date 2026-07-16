@@ -2,83 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin Login</title>
-
-<style>
-body{
-    font-family:Arial;
-    background:#f4f4f4;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
-
-.login-box{
-    width:350px;
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 0 15px rgba(0,0,0,.2);
-}
-
-input{
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    background:#000;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
-
-h2{
-    text-align:center;
-}
-</style>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Admin Login | Kabul Art</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/admin.css">
 </head>
-<body>
+<body data-page="login">
+<main class="admin-login-shell">
+  <section class="admin-card">
+    <p class="admin-muted">Kabul Art Administration</p>
+    <h1>Sign In</h1>
+    <p>Use your admin credentials to manage paintings, uploads, and homepage settings.</p>
 
-<div class="login-box">
+    <form id="login-form" class="admin-form">
+      <div class="admin-field">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" required>
+      </div>
 
-<h2>Admin Login</h2>
+      <div class="admin-field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+      </div>
 
-<input id="username" placeholder="Username">
+      <button class="admin-button" type="submit">Log In</button>
+      <p class="admin-status" data-admin-status aria-live="polite"></p>
+    </form>
+  </section>
+</main>
 
-<input
-id="password"
-type="password"
-placeholder="Password">
-
-<button onclick="login()">
-Login
-</button>
-
-</div>
-
-<script>
-
-function login(){
-
-const user=document.getElementById("username").value;
-const pass=document.getElementById("password").value;
-
-if(user==="admin" && pass==="1234"){
-window.location="dashboard.html";
-}
-else{
-alert("Wrong username or password");
-}
-
-}
-
-</script>
-
+<script src="/admin/admin-app.js" defer></script>
 </body>
 </html>

@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Golden Horizon | Kabul Art</title>
   <meta name="description" content="Explore Golden Horizon, an original abstract painting by Farhad with rich texture, luminous depth, and worldwide availability.">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-artwork-slug="golden-horizon">
   <header class="site-header" id="top">
     <nav class="navbar" aria-label="Primary navigation">
       <a class="logo" href="index.html">
         <img src="images/Logo/logo.png" alt="Kabul Art Logo" class="logo-image">
       </a>
       <div class="nav-actions">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <ul class="nav-menu" id="nav-menu">
           <li><a href="index.html">Home</a></li>
           <li><a href="index.html#gallery">Gallery</a></li>
@@ -31,26 +36,44 @@
   <main>
     <section class="section painting-detail-section">
       <div class="painting-detail-card reveal">
-        <div class="painting-viewer">
-          <div class="viewer-main">
-            <img class="painting-detail-image" id="detail-main-image" src="images/paintings/Abstract 2 Canvas.png" alt="Golden Horizon painting by Farhad">
-            <div class="viewer-actions" aria-label="Artwork viewer controls">
-              <button class="viewer-button" type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
-              <button class="viewer-button" type="button" data-action="zoom-out" aria-label="Zoom out">&minus;</button>
-              <button class="viewer-button" type="button" data-action="reset" aria-label="Reset zoom">Reset</button>
-              <button class="viewer-button viewer-fullscreen" type="button" data-action="fullscreen" aria-label="Open full-screen viewer">Full Screen</button>
+        <div class="painting-viewer" data-artwork-gallery>
+          <div class="artwork-gallery-main">
+            <div class="artwork-gallery-stage is-loading" data-gallery-stage="main" tabindex="0" role="button" aria-label="Open Golden Horizon image in full-screen viewer">
+              <img class="painting-detail-image artwork-gallery-image" id="detail-main-image" src="images/paintings/Abstract 2 Canvas.png" alt="Golden Horizon original abstract painting by Farhad" data-gallery-main decoding="async" fetchpriority="high">
+              <div class="artwork-gallery-loading" aria-hidden="true"></div>
+            </div>
+            <div class="artwork-gallery-controls" aria-label="Artwork viewer controls">
+              <button class="viewer-button" type="button" data-gallery-control="zoom-in" data-gallery-surface="main" aria-label="Zoom in">+</button>
+              <button class="viewer-button" type="button" data-gallery-control="zoom-out" data-gallery-surface="main" aria-label="Zoom out">&minus;</button>
+              <button class="viewer-button" type="button" data-gallery-control="reset" data-gallery-surface="main" aria-label="Reset zoom">Reset</button>
+              <button class="viewer-button viewer-fullscreen" type="button" data-gallery-control="fullscreen" data-gallery-surface="main" aria-label="Open full-screen viewer">Full Screen</button>
             </div>
           </div>
-          <div class="viewer-thumbs" role="listbox" aria-label="Artwork photo gallery">
-            <button class="thumb-btn active" type="button" data-image="images/paintings/Abstract 2 Canvas.png" data-alt="Golden Horizon painting by Farhad" aria-label="View main artwork photo">
-              <img src="images/paintings/Abstract 2 Canvas.png" alt="">
+          <div class="viewer-thumbs" role="listbox" aria-label="Golden Horizon artwork gallery">
+            <button class="thumb-btn active" type="button" data-image="images/paintings/Abstract 2 Canvas.png" data-alt="Golden Horizon original abstract painting by Farhad" aria-label="View Golden Horizon front view" aria-selected="true">
+              <img src="images/paintings/Abstract 2 Canvas.png" alt="" decoding="async">
             </button>
-            <button class="thumb-btn" type="button" data-image="images/paintings/golden-horizon 1.png" data-alt="Golden Horizon detail view" aria-label="View detail photo">
-              <img src="images/paintings/golden-horizon 1.png" alt="">
+            <button class="thumb-btn" type="button" data-image="images/paintings/golden-horizon 1.png" data-alt="Close-up texture detail of Golden Horizon abstract painting" aria-label="View Golden Horizon close-up detail" aria-selected="false">
+              <img src="images/paintings/golden-horizon 1.png" alt="" loading="lazy" decoding="async">
             </button>
-            <button class="thumb-btn" type="button" data-image="images/paintings/golden-horizon 2.png" data-alt="Golden Horizon studio view" aria-label="View studio photo">
-              <img src="images/paintings/golden-horizon 2.png" alt="">
+            <button class="thumb-btn" type="button" data-image="images/paintings/golden-horizon 2.png" data-alt="Side profile of Golden Horizon original abstract painting by Farhad" aria-label="View Golden Horizon side profile" aria-selected="false">
+              <img src="images/paintings/golden-horizon 2.png" alt="" loading="lazy" decoding="async">
             </button>
+          </div>
+          <div id="artwork-viewer-modal" class="artwork-viewer-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Golden Horizon full-screen artwork viewer">
+            <div class="artwork-viewer-panel">
+              <button class="artwork-viewer-close" type="button" aria-label="Close viewer">&times;</button>
+              <div class="artwork-lightbox-stage is-loading" data-gallery-stage="modal">
+                <img id="viewer-modal-image" src="images/paintings/Abstract 2 Canvas.png" alt="Golden Horizon original abstract painting by Farhad" class="artwork-lightbox-image" data-gallery-modal-image decoding="async">
+                <div class="artwork-gallery-loading" aria-hidden="true"></div>
+              </div>
+              <div class="artwork-viewer-controls">
+                <button class="viewer-button" type="button" data-gallery-control="zoom-in" data-gallery-surface="modal" aria-label="Zoom in">+</button>
+                <button class="viewer-button" type="button" data-gallery-control="zoom-out" data-gallery-surface="modal" aria-label="Zoom out">&minus;</button>
+                <button class="viewer-button" type="button" data-gallery-control="reset" data-gallery-surface="modal" aria-label="Reset zoom">Reset</button>
+                <span id="viewer-zoom-label" data-gallery-zoom-label>1.0&times;</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -93,7 +116,7 @@
           <div class="painting-actions">
             <button class="button primary-button" data-add-to-cart data-id="golden-horizon" data-title="Golden Horizon" data-price="2800" data-image="images/paintings/Abstract 2 Canvas.png" data-size="48 &times; 36 in">Add to Cart</button>
             <a class="button secondary-button" href="index.html#contact">Buy Now</a>
-            <button class="wishlist-button" type="button" aria-label="Save to wishlist">&#9825; Save to Wishlist</button>
+            <button class="wishlist-button" type="button" aria-label="Save to wishlist" data-wishlist-button data-artwork-id="golden-horizon">&#9825; Save to Wishlist</button>
           </div>
 
           <div class="share-actions" aria-label="Share artwork">
@@ -183,19 +206,6 @@
       </div>
     </section>
   </main>
-
-  <div id="artwork-viewer-modal" class="artwork-viewer-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Artwork viewer">
-    <div class="artwork-viewer-panel">
-      <button class="artwork-viewer-close" type="button" aria-label="Close viewer">&times;</button>
-      <img id="viewer-modal-image" src="" alt="Artwork preview">
-      <div class="artwork-viewer-controls">
-        <button class="viewer-button" type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
-        <button class="viewer-button" type="button" data-action="zoom-out" aria-label="Zoom out">&minus;</button>
-        <button class="viewer-button" type="button" data-action="reset" aria-label="Reset zoom">Reset</button>
-        <span id="viewer-zoom-label">1.0&times;</span>
-      </div>
-    </div>
-  </div>
 
   <footer class="site-footer">
     <div class="footer-brand">
